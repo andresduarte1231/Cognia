@@ -1,4 +1,4 @@
-server:
+﻿server:
   port: ${SERVER_PORT:4000}
   shutdown: graceful
 spring:
@@ -16,7 +16,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:8080}
+            allowedOrigins: ${CORS_ORIGINS:http://localhost:4000,http://127.0.0.1:4000,http://localhost:5173}
             allowedMethods: GET,POST,PUT,PATCH,DELETE,OPTIONS
             allowedHeaders: Authorization,Content-Type,Idempotency-Key,X-Correlation-Id
             exposedHeaders: X-Correlation-Id
