@@ -9,8 +9,8 @@ spring:
       metrics:
         enabled: true
       httpclient:
-        connect-timeout: 2000
-        response-timeout: 15s
+        connect-timeout: 10000
+        response-timeout: 60s
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials Access-Control-Expose-Headers Vary, RETAIN_FIRST
       globalcors:
