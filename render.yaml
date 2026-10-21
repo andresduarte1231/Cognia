@@ -50,8 +50,8 @@ services:
     envVars:
       - { key: PORT, value: "10000" }
       - { key: METRICS_USER, value: prometheus }
-      - { key: CATALOG_URL, value: "http://cognia-catalog:10000" }
-      - { key: AUTH_URL, value: "http://cognia-auth:10000" }
+      - { key: CATALOG_URL, value: "https://cognia-catalog.onrender.com" }
+      - { key: AUTH_URL, value: "https://cognia-auth.onrender.com" }
       - { key: DB_HOST, sync: false }
       - { key: DB_PORT, sync: false }
       - { key: DB_NAME, sync: false }
@@ -71,8 +71,8 @@ services:
     envVars:
       - { key: PORT, value: "10000" }
       - { key: METRICS_USER, value: prometheus }
-      - { key: AUTH_URL, value: "http://cognia-auth:10000" }
-      - { key: CATALOG_URL, value: "http://cognia-catalog:10000" }
-      - { key: ORDERS_URL, value: "http://cognia-orders:10000" }
+      - { key: AUTH_URL, value: "https://cognia-auth.onrender.com" }
+      - { key: CATALOG_URL, value: "https://cognia-catalog.onrender.com" }
+      - { key: ORDERS_URL, value: "https://cognia-orders.onrender.com" }
       - { key: METRICS_PASSWORD, sync: false }
       - { key: CORS_ORIGINS, sync: false }
