@@ -1,0 +1,2 @@
+function W($path,$text){ [IO.File]::WriteAllText((Join-Path (Get-Location) $path), $text, (New-Object Text.UTF8Encoding $false)) }
+function FixBom { Get-ChildItem backend -Recurse -Include *.java,*.yml,*.xml,*.properties | % { $b=[IO.File]::ReadAllBytes($_.FullName); if($b.Length -gt 2 -and $b[0] -eq 0xEF -and $b[1] -eq 0xBB -and $b[2] -eq 0xBF){ [IO.File]::WriteAllBytes($_.FullName,$b[3..($b.Length-1)]) } } }

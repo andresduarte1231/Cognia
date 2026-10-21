@@ -1,0 +1,56 @@
+server:
+  port: ${SERVER_PORT:4000}
+  shutdown: graceful
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      metrics:
+        enabled: true
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 15s
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials Access-Control-Expose-Headers Vary, RETAIN_FIRST
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:8080}
+            allowedMethods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+            allowedHeaders: Authorization,Content-Type,Idempotency-Key,X-Correlation-Id
+            exposedHeaders: X-Correlation-Id
+            maxAge: 3600
+      routes:
+        - id: auth-service
+          uri: ${AUTH_URL:http://127.0.0.1:4001}
+          predicates:
+            - Path=/api/auth/**,/api/admin/usuarios/**,/api/admin/auditoria/**
+        - id: catalog-service
+          uri: ${CATALOG_URL:http://127.0.0.1:4002}
+          predicates:
+            - Path=/api/productos/**,/api/categorias/**,/api/configuracion/**,/api/admin/productos/**,/api/admin/categorias/**,/api/admin/inventario/**,/api/admin/configuracion/**,/uploads/**
+        - id: orders-service
+          uri: ${ORDERS_URL:http://127.0.0.1:4003}
+          predicates:
+            - Path=/api/pedidos/**,/api/admin/pedidos/**,/api/admin/pagos/**,/api/admin/reportes/**
+cognia:
+  metrics-user: ${METRICS_USER:prometheus}
+  metrics-password: ${METRICS_PASSWORD:}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,info
+  endpoint:
+    health:
+      show-details: never
+  metrics:
+    tags:
+      application: api-gateway
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+        spring.cloud.gateway.requests: true
+      slo:
+        http.server.requests: 100ms,300ms,1s,3s

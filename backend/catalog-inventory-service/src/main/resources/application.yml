@@ -1,0 +1,58 @@
+server:
+  port: ${SERVER_PORT:4002}
+  shutdown: graceful
+  error:
+    include-message: never
+    include-stacktrace: never
+spring:
+  application:
+    name: catalog-inventory-service
+  datasource:
+    url: jdbc:mariadb://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:cognia_aqui_es_tona}?useUnicode=true&characterEncoding=utf8
+    username: ${DB_USER:cognia_app}
+    password: ${DB_PASSWORD:}
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 5000
+      validation-timeout: 3000
+      connection-test-query: SELECT 1
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MariaDBDialect
+  jackson:
+    default-property-inclusion: non_null
+cognia-uploads-placeholder: x
+cognia:
+  uploads-dir: ${UPLOADS_DIR:./uploads}
+  jwt-secret: ${JWT_SECRET:}
+  cors-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:8080}
+  metrics-user: ${METRICS_USER:prometheus}
+  metrics-password: ${METRICS_PASSWORD:}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,info
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: catalog-inventory-service
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      slo:
+        http.server.requests: 100ms,300ms,1s,3s
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
