@@ -1,0 +1,78 @@
+# Blueprint de Render (solo despliegue; el desarrollo local sigue sin Docker).
+# Las variables con sync:false se piden en el panel al crear el Blueprint.
+services:
+  - type: web
+    name: cognia-auth
+    runtime: docker
+    plan: free
+    dockerfilePath: ./deployment/render/Dockerfile.auth-service
+    dockerContext: .
+    healthCheckPath: /actuator/health
+    envVars:
+      - { key: PORT, value: "10000" }
+      - { key: METRICS_USER, value: prometheus }
+      - { key: DB_HOST, sync: false }
+      - { key: DB_PORT, sync: false }
+      - { key: DB_NAME, sync: false }
+      - { key: DB_USER, sync: false }
+      - { key: DB_PASSWORD, sync: false }
+      - { key: DB_PARAMS, sync: false }
+      - { key: JWT_SECRET, sync: false }
+      - { key: METRICS_PASSWORD, sync: false }
+      - { key: CORS_ORIGINS, sync: false }
+      - { key: OWNER_BOOTSTRAP_TOKEN, sync: false }
+  - type: web
+    name: cognia-catalog
+    runtime: docker
+    plan: free
+    dockerfilePath: ./deployment/render/Dockerfile.catalog-inventory-service
+    dockerContext: .
+    healthCheckPath: /actuator/health
+    envVars:
+      - { key: PORT, value: "10000" }
+      - { key: METRICS_USER, value: prometheus }
+      - { key: DB_HOST, sync: false }
+      - { key: DB_PORT, sync: false }
+      - { key: DB_NAME, sync: false }
+      - { key: DB_USER, sync: false }
+      - { key: DB_PASSWORD, sync: false }
+      - { key: DB_PARAMS, sync: false }
+      - { key: JWT_SECRET, sync: false }
+      - { key: METRICS_PASSWORD, sync: false }
+      - { key: CORS_ORIGINS, sync: false }
+  - type: web
+    name: cognia-orders
+    runtime: docker
+    plan: free
+    dockerfilePath: ./deployment/render/Dockerfile.orders-sales-service
+    dockerContext: .
+    healthCheckPath: /actuator/health
+    envVars:
+      - { key: PORT, value: "10000" }
+      - { key: METRICS_USER, value: prometheus }
+      - { key: CATALOG_URL, value: "http://cognia-catalog:10000" }
+      - { key: AUTH_URL, value: "http://cognia-auth:10000" }
+      - { key: DB_HOST, sync: false }
+      - { key: DB_PORT, sync: false }
+      - { key: DB_NAME, sync: false }
+      - { key: DB_USER, sync: false }
+      - { key: DB_PASSWORD, sync: false }
+      - { key: DB_PARAMS, sync: false }
+      - { key: JWT_SECRET, sync: false }
+      - { key: METRICS_PASSWORD, sync: false }
+      - { key: CORS_ORIGINS, sync: false }
+  - type: web
+    name: cognia-gateway
+    runtime: docker
+    plan: free
+    dockerfilePath: ./deployment/render/Dockerfile.api-gateway
+    dockerContext: .
+    healthCheckPath: /actuator/health
+    envVars:
+      - { key: PORT, value: "10000" }
+      - { key: METRICS_USER, value: prometheus }
+      - { key: AUTH_URL, value: "http://cognia-auth:10000" }
+      - { key: CATALOG_URL, value: "http://cognia-catalog:10000" }
+      - { key: ORDERS_URL, value: "http://cognia-orders:10000" }
+      - { key: METRICS_PASSWORD, sync: false }
+      - { key: CORS_ORIGINS, sync: false }

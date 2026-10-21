@@ -1,0 +1,9 @@
+**/node_modules
+**/target
+.git
+.env
+logs
+observability/bin
+observability/data
+backend/api-gateway/src/main/resources/static
+frontend/dist

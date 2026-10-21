@@ -1,0 +1,20 @@
+FROM node:22-alpine AS front
+WORKDIR /w/frontend
+COPY frontend/package*.json ./
+RUN npm ci
+COPY frontend/ ./
+RUN npm run build
+
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /src
+COPY backend/api-gateway/pom.xml .
+RUN mvn -q -B dependency:go-offline
+COPY backend/api-gateway/src ./src
+COPY --from=front /w/backend/api-gateway/src/main/resources/static ./src/main/resources/static
+RUN mvn -q -B -DskipTests package && cp target/api-gateway-*.jar app.jar
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /src/app.jar app.jar
+ENV JAVA_TOOL_OPTIONS="-Xmx300m -XX:+UseSerialGC -XX:MaxMetaspaceSize=128m"
+CMD ["sh","-c","java -Dserver.port=${PORT:-10000} -jar app.jar"]

@@ -1,0 +1,12 @@
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /src
+COPY backend/orders-sales-service/pom.xml .
+RUN mvn -q -B dependency:go-offline
+COPY backend/orders-sales-service/src ./src
+RUN mvn -q -B -DskipTests package && cp target/orders-sales-service-*.jar app.jar
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /src/app.jar app.jar
+ENV JAVA_TOOL_OPTIONS="-Xmx300m -XX:+UseSerialGC -XX:MaxMetaspaceSize=128m"
+CMD ["sh","-c","java -Dserver.port=${PORT:-10000} -jar app.jar"]
