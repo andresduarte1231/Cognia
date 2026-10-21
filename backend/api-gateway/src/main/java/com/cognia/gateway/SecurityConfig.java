@@ -25,7 +25,7 @@ public class SecurityConfig {
         if (p == null || p.isBlank()) {
             return new MapReactiveUserDetailsService(User.withUsername("deshabilitado").password("{noop}x").roles("NONE").disabled(true).build());
         }
-        return new MapReactiveUserDetailsService(User.withUsername(u).password(new BCryptPasswordEncoder().encode(p)).roles("METRICS").build());
+        return new MapReactiveUserDetailsService(User.withUsername(u).password("{bcrypt}" + new BCryptPasswordEncoder().encode(p)).roles("METRICS").build());
     }
 
     @Bean

@@ -1,0 +1,9 @@
+[21:15:43] Estado inicial: up=1 ; GET /api/productos via gateway = 200
+[21:15:43] Deteniendo catalog-inventory-service (puerto 4002)
+Detenido PID 10060 en puerto 4002
+[21:15:44] Gateway con servicio caido: GET /api/productos = 503  (esperado 502/503/504, no 200)
+[21:15:45] Gateway sigue sirviendo la SPA: GET / = 200
+[21:16:20] up=0 ; alertas: ServicioNoDisponible/catalog-inventory-service=firing ; tiempo hasta firing: 35s ; firing=True
+[21:16:20] Recuperando servicio
+[21:16:50] up=1 tras 30s ; GET /api/productos = 200
+[21:17:10] Alertas tras recuperacion:   (vacio = resuelta)

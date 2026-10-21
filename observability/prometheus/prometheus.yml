@@ -1,0 +1,27 @@
+# Prometheus de COGNIA. Los secretos NO viven aqui: password_file apunta a observability/runtime (generado, ignorado por Git).
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    entorno: local
+
+rule_files:
+  - ../alerts/cognia-alerts.yml
+
+scrape_configs:
+  - job_name: api-gateway
+    metrics_path: /actuator/prometheus
+    basic_auth: { username: prometheus, password_file: ../runtime/metrics.pass }
+    static_configs: [{ targets: ['127.0.0.1:4000'] }]
+  - job_name: auth-service
+    metrics_path: /actuator/prometheus
+    basic_auth: { username: prometheus, password_file: ../runtime/metrics.pass }
+    static_configs: [{ targets: ['127.0.0.1:4001'] }]
+  - job_name: catalog-inventory-service
+    metrics_path: /actuator/prometheus
+    basic_auth: { username: prometheus, password_file: ../runtime/metrics.pass }
+    static_configs: [{ targets: ['127.0.0.1:4002'] }]
+  - job_name: orders-sales-service
+    metrics_path: /actuator/prometheus
+    basic_auth: { username: prometheus, password_file: ../runtime/metrics.pass }
+    static_configs: [{ targets: ['127.0.0.1:4003'] }]

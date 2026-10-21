@@ -1,0 +1,58 @@
+groups:
+  - name: cognia-disponibilidad
+    rules:
+      - alert: ServicioNoDisponible
+        expr: up == 0
+        for: 30s
+        labels: { severidad: critica }
+        annotations:
+          resumen: "Servicio {{ $labels.job }} no disponible"
+          descripcion: "Prometheus no pudo consultar {{ $labels.instance }} durante mas de 30 segundos."
+      - alert: MetricasPerdidas
+        expr: count(up{job=~"api-gateway|auth-service|catalog-inventory-service|orders-sales-service"}) < 4
+        for: 1m
+        labels: { severidad: alta }
+        annotations:
+          resumen: "Faltan series de monitoreo de algun servicio"
+          descripcion: "Prometheus ya no recibe la serie 'up' de al menos un servicio esperado."
+
+  - name: cognia-rendimiento
+    rules:
+      - alert: ErroresHttp5xxElevados
+        expr: |
+          sum by (application) (rate(http_server_requests_seconds_count{status=~"5.."}[2m]))
+            / sum by (application) (rate(http_server_requests_seconds_count[2m])) > 0.05
+          and sum by (application) (rate(http_server_requests_seconds_count[2m])) > 0.05
+        for: 1m
+        labels: { severidad: alta }
+        annotations:
+          resumen: "Mas del 5% de respuestas 5xx en {{ $labels.application }}"
+          descripcion: "Proporcion de errores 5xx en los ultimos 2 minutos: {{ $value | humanizePercentage }}."
+      - alert: LatenciaElevada
+        expr: |
+          histogram_quantile(0.95, sum by (application, le) (rate(http_server_requests_seconds_bucket{uri!~"/actuator.*"}[5m]))) > 1
+        for: 2m
+        labels: { severidad: media }
+        annotations:
+          resumen: "Latencia p95 superior a 1 s en {{ $labels.application }}"
+          descripcion: "p95 actual: {{ $value | humanizeDuration }}."
+
+  - name: cognia-base-de-datos
+    rules:
+      - alert: FalloConexionMySQL
+        expr: cognia_db_up == 0
+        for: 30s
+        labels: { severidad: critica }
+        annotations:
+          resumen: "{{ $labels.application }} no puede conectar con MySQL/MariaDB"
+          descripcion: "El indicador cognia_db_up es 0."
+
+  - name: cognia-seguridad
+    rules:
+      - alert: IntentosAutenticacionFallidosElevados
+        expr: sum(increase(cognia_auth_failures_total[5m])) > 10
+        for: 0m
+        labels: { severidad: media }
+        annotations:
+          resumen: "Mas de 10 autenticaciones fallidas en 5 minutos"
+          descripcion: "Posible ataque de fuerza bruta o credenciales mal configuradas. Total agregado: {{ $value }}."

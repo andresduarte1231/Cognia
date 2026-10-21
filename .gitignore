@@ -14,3 +14,8 @@ tools/
 
 backend/api-gateway/src/main/resources/static/
 frontend/node_modules/
+
+observability/bin/
+
+observability/runtime/
+observability/data/
