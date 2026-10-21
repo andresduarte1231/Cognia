@@ -11,7 +11,7 @@ export function Layout() {
       <a className="skip" href="#contenido">Saltar al contenido</a>
       <header className="header">
         <div className="container header-in">
-          <Link to="/" className="logo">Aquí es <b>Toña</b></Link>
+          <Link to="/" className="logo"><img src="/mascota.png" alt="" width="52" height="52" /><span>Aquí es Toña</span></Link>
           <nav className="nav" aria-label="Principal">
             <NavLink to="/" end>Inicio</NavLink>
             <NavLink to="/productos">Productos</NavLink>

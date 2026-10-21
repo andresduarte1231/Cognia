@@ -44,7 +44,7 @@ export default function Home() {
             <p>Alimentos y productos de consumo para tu hogar, con domicilio o recogida en tienda.</p>
             <Link to="/productos" className="btn grande">Ver productos</Link>
           </div>
-          <img src="/placeholder.svg" alt="Productos de la tienda Aquí es Toña" width="420" height="315" />
+          <img className="hero-logo" src="/logo-completo.png" alt="Logo Aquí es Toña: abuela sonriente con una paleta" width="320" height="427" />
         </div>
       </section>
 
