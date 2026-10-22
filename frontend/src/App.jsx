@@ -4,7 +4,7 @@ import Home from './pages/Home.jsx';
 import Catalogo from './pages/Catalogo.jsx';
 import ProductoDetalle from './pages/ProductoDetalle.jsx';
 import Carrito from './pages/Carrito.jsx';
-import { Login, Registro } from './pages/Acceso.jsx';
+import { Login } from './pages/Acceso.jsx';
 import Checkout from './pages/Checkout.jsx';
 import { MisPedidos, PedidoDetalle } from './pages/Pedidos.jsx';
 import { Legal } from './pages/Legal.jsx';
@@ -31,10 +31,9 @@ export default function App() {
         <Route path="productos/:id" element={<ProductoDetalle />} />
         <Route path="carrito" element={<Carrito />} />
         <Route path="login" element={<Login />} />
-        <Route path="registro" element={<Registro />} />
         <Route path="privacidad" element={<Legal tipo="privacidad" />} />
         <Route path="terminos" element={<Legal tipo="terminos" />} />
-        <Route path="checkout" element={<RequiereSesion><Checkout /></RequiereSesion>} />
+        <Route path="checkout" element={<Checkout />} />
         <Route path="mis-pedidos" element={<RequiereSesion><MisPedidos /></RequiereSesion>} />
         <Route path="mis-pedidos/:id" element={<RequiereSesion><PedidoDetalle /></RequiereSesion>} />
         <Route path="admin" element={<RequiereAdmin><AdminLayout /></RequiereAdmin>}>

@@ -32,7 +32,6 @@ export function Login() {
         {error && <p className="error" role="alert">{error}</p>}
         <button className="btn" disabled={enviando}>{enviando ? 'Ingresando…' : 'Ingresar'}</button>
       </form>
-      <p>¿No tienes cuenta? <Link to="/registro">Regístrate</Link></p>
     </div>
   );
 }

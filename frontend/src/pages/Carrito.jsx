@@ -28,7 +28,7 @@ export default function Carrito() {
         </table>
       </div>
       <p className="total">Subtotal: <b>{moneda(total)}</b></p>
-      <p className="nota">Los precios y existencias se vuelven a validar en el servidor al confirmar el pedido. El costo de domicilio se agrega en el siguiente paso.</p>
+      <p className="nota">El pedido se envía por WhatsApp. El costo del domicilio se acuerda por ese chat.</p>
       <div className="fila">
         <button className="btn sec" onClick={vaciar}>Vaciar carrito</button>
         <button className="btn" onClick={() => nav('/checkout')}>Continuar con el pedido</button>
